@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { auth } = require('./auth');           // импорт конфигурации
+const { auth } = require('./auth');
 const { toNodeHandler } = require('better-auth/node');
 
 require('dotenv').config();
@@ -16,10 +16,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Подключаем Better Auth ко всем запросам (это добавит req.auth)
-app.all('/api/auth/*', toNodeHandler(auth));
+// Подключаем Better Auth
+app.use('/api/auth', toNodeHandler(auth));
 
-// Middleware для проверки авторизации на страницах
+// Middleware для проверки авторизации
 async function requireAuth(req, res, next) {
     const session = await auth.api.getSession({
         headers: req.headers,
@@ -33,9 +33,7 @@ async function requireAuth(req, res, next) {
 
 // ========== Маршруты ==========
 
-// Главная страница (лендинг)
 app.get('/', async (req, res) => {
-    // Проверяем, авторизован ли пользователь
     const session = await auth.api.getSession({
         headers: req.headers,
     });
@@ -45,32 +43,23 @@ app.get('/', async (req, res) => {
     });
 });
 
-// Страница входа через Telegram (будет обработана Better Auth)
-// Кнопка на лендинге должна вести на /api/auth/signin/telegram
-
-// Личный кабинет (только для авторизованных)
 app.get('/cabinet', requireAuth, (req, res) => {
     res.render('cabinet', { user: req.user });
 });
 
-// API: баланс (заглушка)
 app.get('/api/balance', requireAuth, (req, res) => {
     res.json({ balance: 250 });
 });
 
-// Выход
 app.get('/logout', async (req, res) => {
-    // Вызываем API выхода Better Auth
     await auth.api.signOut({
         headers: req.headers,
     });
     res.redirect('/');
 });
 
-// Тестовый маршрут
 app.get('/health', (req, res) => res.send('OK'));
 
-// ========== Запуск сервера ==========
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Сервер запущен: ${BASE_URL}`);
     console.log(`🤖 Telegram бот: @${process.env.BOT_USERNAME}`);
