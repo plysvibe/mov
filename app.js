@@ -43,11 +43,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,  // берите из .env
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-        secure: true,   // true только для HTTPS
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // сутки
-    }
+cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24
+}
 }));
 
 // ========== Стандартные middleware ==========
@@ -206,7 +206,7 @@ app.get('/logout', (req, res) => {
 });
 
 // ========== Запуск сервера ==========
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Сервер запущен: ${BASE_URL}`);
     console.log(`🤖 Telegram бот: @${BOT_USERNAME}`);
 });
