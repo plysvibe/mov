@@ -11,6 +11,7 @@
     "axios": "^1.15.0",
     "better-auth": "^1.6.5",
     "better-auth-telegram": "^1.5.0",
+    "better-sqlite3": "^12.9.0",
     "dotenv": "^17.4.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",

@@ -1,4 +1,13 @@
-node_modules/
+# Секретные переменные окружения
 .env
-dist/
-.onreza/
+
+# База данных SQLite (если она хранит пользовательские данные)
+auth.db
+auth.db-journal
+
+# Логи
+*.log
+
+# Временные файлы
+.DS_Store
+node_modules/
