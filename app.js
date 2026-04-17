@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const { toNodeHandler } = require('better-auth/node');
 const crypto = require('crypto');
 
 require('dotenv').config();
@@ -15,21 +14,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Подключаем Better Auth
-app.use('/api/auth', toNodeHandler(auth));
-
-// Middleware для проверки авторизации
-async function requireAuth(req, res, next) {
-    const session = await auth.api.getSession({
-        headers: req.headers,
-    });
-    if (!session) {
-        return res.redirect('/');
-    }
-    req.user = session.user;
-    next();
-}
 
 // ========== Маршруты ==========
 
@@ -83,6 +67,18 @@ app.post('/api/auth/telegram', async (req, res) => {
     // Например, создаем сессию пользователя или выполняем другие операции
     res.sendStatus(200);
 });
+
+// Middleware для проверки авторизации
+async function requireAuth(req, res, next) {
+    const session = await auth.api.getSession({
+        headers: req.headers,
+    });
+    if (!session) {
+        return res.redirect('/');
+    }
+    req.user = session.user;
+    next();
+}
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Сервер запущен: ${BASE_URL}`);
