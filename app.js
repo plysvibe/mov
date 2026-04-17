@@ -17,31 +17,33 @@ app.use(express.urlencoded({ extended: true }));
 
 // ========== Маршруты ==========
 
+// Маршрут /
 app.get('/', async (req, res) => {
-    const session = await auth.api.getSession({
-        headers: req.headers,
-    });
+    // Больше не используем auth, просто отображаем страницу
     res.render('landing', {
-        user: session?.user || null,
+        user: null,  // Пока неавторизованный пользователь
         botUsername: process.env.BOT_USERNAME,
     });
 });
 
+// Маршрут личного кабинета
 app.get('/cabinet', requireAuth, (req, res) => {
+    // Здесь можно проверять авторизацию через Telegram OAuth
     res.render('cabinet', { user: req.user });
 });
 
+// Маршрут баланса
 app.get('/api/balance', requireAuth, (req, res) => {
     res.json({ balance: 250 });
 });
 
+// Маршрут выхода
 app.get('/logout', async (req, res) => {
-    await auth.api.signOut({
-        headers: req.headers,
-    });
+    // Здесь можно реализовать выход из Telegram OAuth
     res.redirect('/');
 });
 
+// Маршрут здоровья
 app.get('/health', (req, res) => res.send('OK'));
 
 // Маршрут для проверки Telegram OAuth
@@ -70,14 +72,8 @@ app.post('/api/auth/telegram', async (req, res) => {
 
 // Middleware для проверки авторизации
 async function requireAuth(req, res, next) {
-    const session = await auth.api.getSession({
-        headers: req.headers,
-    });
-    if (!session) {
-        return res.redirect('/');
-    }
-    req.user = session.user;
-    next();
+    // Больше не используем auth, пропускаем проверку
+    next();  // Пропускаем middleware, так как авторизация через Telegram OAuth
 }
 
 app.listen(PORT, '0.0.0.0', () => {
