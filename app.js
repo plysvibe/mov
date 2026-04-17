@@ -67,14 +67,12 @@ app.get('/api/balance', requireAuth, (req, res) => {
 app.get('/auth/telegram',
   passport.authenticate('telegram'),
   function(req, res) {
-    // В случае успеха, сюда мы попадаем уже после колбэка, но редирект лучше делать в самом колбэке
     res.redirect('/');
   });
 
 app.get('/auth/telegram/callback',
   passport.authenticate('telegram', { failureRedirect: '/' }),
   (req, res) => {
-    // Успешная авторизация, перенаправляем в личный кабинет
     res.redirect('/cabinet');
   }
 );
