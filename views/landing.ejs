@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molotov VPN — Подключайся и сжигай стены</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+
+    <% if (user) { %>
+    <div class="user-area">
+        <a href="/cabinet" class="cabinet-link">Личный кабинет</a>
+        <a href="/logout" class="logout-link">Выйти</a>
+    </div>
+<% } %>
+
+<header class="header">
+    <!-- Лого по центру -->
+    <div class="logo-container centered">
+        <img src="/images/logo-light.svg" alt="Molotov VPN" class="logo-img logo-light">
+        <img src="/images/logo-dark.svg" alt="Molotov VPN" class="logo-img logo-dark">
+        <span class="hover-text">Molotov <span class="highlight">VPN</span></span>
+
+    </div>
+   
+
+    <!-- Переключатель темы — справа -->
+    <div class="theme-switch-wrapper header-right">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider">
+                <img src="/images/sun.svg" alt="Светлая" class="sun-icon">
+                <img src="/images/moon.svg" alt="Тёмная" class="moon-icon">
+            </span>
+        </label>
+    </div>
+</header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>Подключите VPN бесплатно!</h1>
+            <div class="free-days">Дарим вам 5 дней бесплатного пользования</div>
+        </div>
+
+  <ul class="benefits-list">
+<li>
+    <div id="moneyAnimation" class="money-animation" style="width: 50px; height: 50px;"></div>
+    <span>Самая низкая цена на рынке</span>
+    <div class="price-note">100₽ /мес за устройство</div>
+</li>
+    <li>
+        <div id="raketaAnimation" class="raketa-animation" style="width: 50px; height: 50px;"></div>
+        <span>Высокая скорость</span>
+    </li>
+    <li>
+        <div id="lockAnimation" class="lock-animation" style="width: 50px; height: 50px;"></div>
+        <span>Доступ к любым сайтам</span>
+    </li>
+    <li>
+        <div id="russiaFlagAnimation" class="russia-flag-animation" style="width: 50px; height: 50px;"></div>
+        <span>Оплата картами РФ и СБП</span>
+    </li>
+</ul>
+
+<div class="invite">
+    <div class="invite-content">
+        <div id="handsAnimation" class="hands-animation" style="width: 50px; height: 50px; flex-shrink: 0;"></div>
+        <div class="invite-text">
+            <p>Пригласите друзей в наш сервис и получите</p>
+            <p><span class="bonus">50₽</span> на баланс за каждого друга</p>
+        </div>
+    </div>
+</div>
+
+<a href="https://t.me/MolotovVPN_bot?start=register" 
+   class="telegram-btn" target="_blank">
+   <div id="btnTelegramAnimation" class="btn-telegram-animation"></div>
+   Зарегистрироваться через Telegram
+</a>
+            </div>
+        </div>
+        <div class="footer-note">
+            Molotov VPN — выжигаем следы, сохраняем свободу
+        </div>
+    </main>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

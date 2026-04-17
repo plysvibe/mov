@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет — Molotov VPN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo-container centered">
+        <img src="/images/logo-light.svg" alt="Molotov VPN" class="logo-img logo-light">
+        <img src="/images/logo-dark.svg" alt="Molotov VPN" class="logo-img logo-dark">
+        <span class="hover-text">Molotov <span class="highlight">VPN</span></span>
+    </div>
+    <div class="theme-switch-wrapper header-right">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider">
+                <img src="/images/sun.svg" alt="Светлая" class="sun-icon">
+                <img src="/images/moon.svg" alt="Тёмная" class="moon-icon">
+            </span>
+        </label>
+    </div>
+</header>
+
+<main class="container">
+    <div class="cabinet-card">
+        <div class="user-greeting">
+            <h2>Добро пожаловать, <%= user.firstName %>!</h2>
+            <% if (user.photoUrl) { %>
+                <img src="<%= user.photoUrl %>" alt="Avatar" class="cabinet-avatar">
+            <% } else { %>
+                <div class="cabinet-avatar-placeholder">👤</div>
+            <% } %>
+        </div>
+        <div class="user-info-block">
+            <p><strong>Telegram ID:</strong> <%= user.id %></p>
+            <p><strong>Имя пользователя:</strong> @<%= user.username || 'не указан' %></p>
+            <p><strong>Баланс:</strong> <span id="balance">0</span> ₽</p>
+            <button id="topupBtn" class="telegram-btn" style="margin-top: 20px;">Пополнить баланс</button>
+            <a href="/logout" class="logout-btn" style="display: inline-block; margin-top: 15px;">Выйти из аккаунта</a>
+        </div>
+    </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script>
+    // Пример загрузки баланса (позже заменишь на реальный запрос)
+    fetch('/api/balance')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('balance').innerText = data.balance;
+        })
+        .catch(() => document.getElementById('balance').innerText = '0');
+
+    document.getElementById('topupBtn').addEventListener('click', () => {
+        alert('Функция пополнения будет добавлена позже');
+    });
+</script>
+</body>
+</html>

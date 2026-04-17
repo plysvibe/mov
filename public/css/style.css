@@ -1,0 +1,504 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --border-color: #e0e0e0;
+    --toggle-bg: #dddddd;
+    --toggle-knob: #ffffff;
+    --header-bg: rgba(255,255,255,0.8);
+    --card-bg: #f8f9fa;
+    --button-bg: #2990FF;
+    --button-hover: #1a6fcc;
+    --accent: #2990FF;
+    --list-marker: #2990FF;
+}
+body.dark-theme {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --border-color: #333333;
+    --toggle-bg: #3a3a3a;
+    --toggle-knob: #2990FF;
+    --header-bg: rgba(18,18,18,0.9);
+    --card-bg: #1e1e1e;
+    --button-bg: #2990FF;
+    --button-hover: #4da6ff;
+    --accent: #4da6ff;
+    --list-marker: #4da6ff;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.4;
+}
+/* Шапка: переключатель справа, лого по центру */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px 32px;
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+/* Контейнер логотипа – по центру */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.logo-img {
+    height: 68px;
+    width: auto;
+    display: block;
+}
+/* Переключение логотипов */
+.logo-light {
+    display: block !important;
+}
+.logo-dark {
+    display: none !important;
+}
+body.dark-theme .logo-light {
+    display: none !important;
+}
+body.dark-theme .logo-dark {
+    display: block !important;
+}
+/* Текст всегда видимый */
+.hover-text {
+    display: inline;
+    opacity: 1;
+    max-width: none;
+    font-size: 20pt;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-left: 8px;
+    white-space: nowrap;
+    transition: none;
+}
+.hover-text .highlight {
+    color: #2990FF;
+    font-size: 20pt;
+}
+
+/* Переключатель темы – справа */
+.theme-switch-wrapper {
+    margin-left: auto;
+}
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+}
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-bg);
+    border-radius: 34px;
+    transition: 0.3s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 5px;
+    bottom: 4px;
+    background-color: var(--toggle-knob);
+    border-radius: 50%;
+    transition: 0.3s;
+    z-index: 2;
+}
+.slider img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    z-index: 3;
+    pointer-events: none;
+}
+.slider .sun-icon {
+    left: 8px;
+}
+.slider .moon-icon {
+    right: 8px;
+}
+input:checked + .slider:before {
+    transform: translateX(44px);
+}
+body.dark-theme .slider .sun-icon {
+    filter: invert(1);
+}
+
+/* ОСНОВНОЙ КОНТЕНТ */
+.container {
+    max-width: 720px;
+    margin: 80px auto 0;
+    padding: 0 1.5rem 2.5rem;
+}
+.hero {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+.hero .free-days {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-bottom: 2rem;
+}
+
+/* СПИСОК ПРЕИМУЩЕСТВ */
+.benefits-list {
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
+    list-style: none;
+}
+
+
+.benefits-list li {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.6rem 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+/* Стиль для цены рядом с текстом */
+.price-note {
+    font-size: 0.7rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    white-space: nowrap;
+    margin-left: 8px;
+    font-weight: 500;
+    font-style: italic;
+       display: inline-block;
+    line-height: normal;  /* Убираем лишние отступы */
+    vertical-align: middle;  /* Вертикальное выравнивание */
+}
+
+.benefits-list li:last-child {
+    border-bottom: none;
+}
+/* Иконки анимаций */
+.money-animation,
+.raketa-animation,
+.lock-animation,
+.russia-flag-animation {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+/* Текст внутри li */
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.benefits-list li span {
+      font-size: 1.2rem;
+    font-weight: 400;
+    color: var(white);
+    text-align: left;
+}
+
+/* Дополнительный текст рядом с основным */
+.benefits-list li .price-note {
+    font-size: 0.7rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    white-space: nowrap;
+    margin-left: 8px;
+    font-weight: 500;
+    font-style: italic;
+       display: inline-block;
+    line-height: normal;  /* Убираем лишние отступы */
+    vertical-align: middle;  /* Вертикальное выравнивание */
+}
+
+/* Блок приглашения */
+.invite {
+  background: var(--card-bg);
+    border-radius: 28px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
+    list-style: none;
+}
+.invite-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.invite-text {
+    text-align: left;
+}
+.invite-text p {
+      margin: 3px 0;
+    font-size: 1.2rem;     /* ← стало как у free-days */
+    font-weight: 400;      /* ← как у free-days */
+    color: var(--text-color);          /* ← главное: серый полупрозрачный стиль */
+    line-height: 1.4;  
+}
+.bonus {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    opacity: 1;
+}
+
+.pricing {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.price-card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 100%;  /* Растягиваем на всю ширину родителя */
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.price span {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.telegram-btn {
+    background: #27A5E7;
+    border: none;
+    padding: 18px 24px;      /* Увеличил вертикальные отступы с 14px до 18px */
+    border-radius: 60px;
+    font-size: 1.2rem;       /* Увеличил размер шрифта с 1rem до 1.2rem */
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;               /* Увеличил расстояние между иконкой и текстом */
+    cursor: pointer;
+    transition: 0.2s;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+        position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+.btn-telegram-animation {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.telegram-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.5), 
+        transparent
+    );
+    transform: skewX(-20deg);
+    animation: lightRun 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes lightRun {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+.telegram-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.telegram-btn:hover {
+    background: #1e8bc2;
+    transform: scale(1.02);
+}
+.footer-note {
+    text-align: center;
+    font-size: 0.75rem;
+    margin-top: 2rem;
+    opacity: 0.8;
+}
+
+/* Личный кабинет */
+.cabinet-card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cabinet-avatar, .cabinet-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.cabinet-avatar-placeholder {
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.user-info-block p {
+    margin: 15px 0;
+    font-size: 1.1rem;
+}
+
+.logout-btn {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .user-greeting {
+        justify-content: center;
+        text-align: center;
+    }
+}
+.cabinet-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 15px;
+}
+.cabinet-link:hover {
+    text-decoration: underline;
+}
+
+
+/* АДАПТИВ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    .hero .free-days {
+        font-size: 1rem;
+    }
+    .benefits-list {
+        padding: 1.2rem;
+    }
+    .benefits-list li {
+        font-size: 0.9rem;
+        gap: 10px;
+    }
+    .money-animation,
+    .raketa-animation,
+    .lock-animation,
+    .russia-flag-animation {
+        width: 32px;
+        height: 32px;
+    }
+    .container {
+        margin-top: 40px;
+    }
+    .hover-text {
+        font-size: 1.2rem;
+        margin-left: 6px;
+    }
+    .logo-container {
+        position: static;
+        transform: none;
+        justify-content: flex-start;
+        left: auto;
+        margin-left: 8px;
+        gap: 6px;
+    }
+    .logo-img {
+        height: 56px;
+    }
+}
