@@ -38,7 +38,7 @@ const auth = betterAuth({
     secret: BETTER_AUTH_SECRET,
     database: {
         provider: "sqlite",
-        url: "./auth.db",               // файл базы данных будет создан в корне проекта
+        url: "/app/data/auth.db",               // файл базы данных будет создан в корне проекта
     },
     plugins: [
         telegram({
