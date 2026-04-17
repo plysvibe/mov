@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     // ====================== ТЕМА ======================
     const toggle = document.getElementById('theme-toggle');
     if (toggle) {
@@ -22,11 +21,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ====================== Кнопка Telegram ======================
+    // ====================== Кнопка Telegram OAuth ======================
     const telegramBtn = document.getElementById('telegramAuth');
     if (telegramBtn) {
         telegramBtn.addEventListener('click', () => {
-            window.open('https://t.me/MolotovVPN_bot', '_blank');
+            // Открываем поп-ап авторизации Telegram OAuth
+            const authPopup = window.open('https://oauth.telegram.org/auth?bot_id=YOUR_BOT_ID&origin=YOUR_SITE_URL', '', 'width=600,height=600');
+            
+            // Периодически проверяем закрытие поп-апа
+            const checkPopupClosed = setInterval(() => {
+                if (authPopup.closed) {
+                    clearInterval(checkPopupClosed);
+                    
+                    // Проверяем наличие параметра auth_data в URL
+                    const params = new URLSearchParams(window.location.search);
+                    const authData = params.get('auth_data');
+                    
+                    if (authData) {
+                        // Отправляем auth_data на сервер для проверки
+                        fetch('/api/auth/telegram', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ authData })
+                        }).then(response => {
+                            if (response.ok) {
+                                // Авторизация прошла успешно, перенаправляем на личный кабинет
+                                window.location.href = '/cabinet';
+                            } else {
+                                alert('Ошибка авторизации!');
+                            }
+                        });
+                    }
+                }
+            }, 500);
         });
     }
 
@@ -52,12 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-// Загружаем все анимации
-loadAnimation('moneyAnimation', '/animations/cash.json', '💰');
-loadAnimation('raketaAnimation', '/animations/raketa.json', '🚀');
-loadAnimation('lockAnimation', '/animations/lock.json', '🔒');
-loadAnimation('russiaFlagAnimation', '/animations/russia-flag.json', '🇷🇺');
-loadAnimation('handsAnimation', '/animations/hands.json', '🤝');
-loadAnimation('btnTelegramAnimation', '/animations/telegram-icon.json', '📱'); // иконка в кнопке
-console.log('✅ Все анимации загружены через Lottie');
+    // Загружаем все анимации
+    loadAnimation('moneyAnimation', '/animations/cash.json', '💰');
+    loadAnimation('raketaAnimation', '/animations/raketa.json', '🚀');
+    loadAnimation('lockAnimation', '/animations/lock.json', '🔒');
+    loadAnimation('russiaFlagAnimation', '/animations/russia-flag.json', '🇷🇺');
+    loadAnimation('handsAnimation', '/animations/hands.json', '🤝');
+    loadAnimation('btnTelegramAnimation', '/animations/telegram-icon.json', '📱'); // иконка в кнопке
+    console.log('✅ Все анимации загружены через Lottie');
 });

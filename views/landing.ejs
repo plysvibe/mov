@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script async src="https://telegram.org/js/telegram-widget.js?20" data-telegram-login="YOUR_BOT_NAME" data-request-access="write"></script>
 </head>
 <body>
 
@@ -20,7 +21,7 @@
     <header class="header">
         <div class="logo-container centered">
             <img src="/images/logo-light.svg" alt="Molotov VPN" class="logo-img logo-light">
-            <img src="/images/logo-dark.svg" alt="Molotov VPN" class="logo-img logo-dark">
+            <img alt="Molotov VPN" class="logo-img logo-dark" id="019d9c7f-bf13-7043-877e-3ffbabca31dd">
             <span class="hover-text">Molotov <span class="highlight">VPN</span></span>
         </div>
         <div class="theme-switch-wrapper header-right">
@@ -28,7 +29,7 @@
                 <input type="checkbox" id="theme-toggle">
                 <span class="slider">
                     <img src="/images/sun.svg" alt="Светлая" class="sun-icon">
-                    <img src="/images/moon.svg" alt="Тёмная" class="moon-icon">
+                    <img alt="Тёмная" class="moon-icon" id="019d9c7f-c6eb-764b-b5aa-53cdfa6699fc">
                 </span>
             </label>
         </div>
@@ -70,20 +71,4 @@
             </div>
         </div>
 
-        <!-- ✅ ИСПРАВЛЕННАЯ ССЫЛКА НА ВХОД -->
-      
-<!-- Стало -->
-<button type="button" class="telegram-btn" id="telegramAuth">
-    <div id="btnTelegramAnimation" class="btn-telegram-animation"></div>
-    Войти через Telegram
-</button>
-
-        <div class="footer-note">
-            Molotov VPN — выжигаем следы, сохраняем свободу
-        </div>
-    </main>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/auth-client.js"></script>
-</body>
-</html>
+        <!-- ✅ Исправленная кнопка входа через Telegram OAuth
