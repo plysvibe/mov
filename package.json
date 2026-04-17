@@ -1,29 +1,22 @@
 {
   "name": "mov2",
   "version": "1.0.0",
-  "description": "Molotov VPN landing",
+  "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node app.js"
   },
   "dependencies": {
-    "axios": "^1.15.0",
-    "better-auth": "^1.6.5",
-    "better-auth-telegram": "^1.5.0",
-    "better-sqlite3": "^12.9.0",
-    "dotenv": "^17.4.2",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "express-session": "^1.19.0",
-    "node-telegram-bot-api": "^0.67.0",
+    "express": "^4.21.2",
+    "ejs": "^3.1.10",
+    "dotenv": "^16.4.7",
     "passport": "^0.7.0",
-    "passport-telegram-official": "^3.0.0",
-    "sqlite3": "^6.0.1"
+    "passport-telegram-official": "^1.0.2",
+    "express-session": "^1.18.1",
+    "sqlite3": "^5.1.7"
   },
-  "devDependencies": {
-    "@vercel/ncc": "^0.38.4",
-    "copyfiles": "^2.4.1",
-    "nodemon": "^3.0.1"
-  }
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

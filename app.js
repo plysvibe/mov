@@ -1,7 +1,7 @@
 // app.js
 const express = require('express');
 const path = require('path');
-const session = require('express-session'); // Добавляем поддержку сессий
+const session = require('express-session');
 const { passport } = require('./auth');
 
 require('dotenv').config();
@@ -9,7 +9,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
-const BETTER_AUTH_SECRET = process.env.BETTER_AUTH_SECRET || process.env.SESSION_SECRET;
+const SESSION_SECRET = process.env.BETTER_AUTH_SECRET || process.env.SESSION_SECRET || 'dev-secret-key-at-least-32-chars-long!!';
 
 // ========== Middleware ==========
 app.set('view engine', 'ejs');
@@ -18,15 +18,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Настраиваем сессии (обязательно для Passport)
+// Сессии
 app.use(session({
-    secret: BETTER_AUTH_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: BASE_URL.startsWith('https') } // secure: true для HTTPS
+    saveUninitialized: false,
+    cookie: {
+        secure: BASE_URL.startsWith('https'),
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 дней
+    }
 }));
 
-// Инициализируем Passport и подключаем его сессии
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -38,12 +41,17 @@ function requireAuth(req, res, next) {
     res.redirect('/');
 }
 
+// Глобальная переменная user для шаблонов
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
+
 // ========== Маршруты ==========
 
 app.get('/', (req, res) => {
     res.render('landing', {
-        user: req.user || null,
-        botUsername: process.env.BOT_USERNAME,
+        botUsername: process.env.BOT_USERNAME
     });
 });
 
@@ -55,24 +63,19 @@ app.get('/api/balance', requireAuth, (req, res) => {
     res.json({ balance: 250 });
 });
 
-// --- Маршруты для Telegram OAuth ---
-
-// Начало процесса авторизации: перенаправляет пользователя на страницу Telegram
+// --- Telegram OAuth ---
 app.get('/auth/telegram', passport.authenticate('telegram'));
 
-// Callback URL, на который Telegram вернёт пользователя после авторизации
 app.get('/auth/telegram/callback',
     passport.authenticate('telegram', { failureRedirect: '/' }),
     (req, res) => {
-        // Успешная авторизация, перенаправляем в личный кабинет
         res.redirect('/cabinet');
     }
 );
 
-// Выход из системы
 app.get('/logout', (req, res, next) => {
     req.logout((err) => {
-        if (err) { return next(err); }
+        if (err) return next(err);
         res.redirect('/');
     });
 });
