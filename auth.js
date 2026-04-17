@@ -1,7 +1,7 @@
 // auth.js
 const { betterAuth } = require("better-auth");
 const { telegram } = require("better-auth-telegram");
-const { memoryAdapter } = require("better-auth/adapters/memory"); // <-- правильный импорт
+const { memoryAdapter } = require("better-auth/adapters/memory");
 
 console.log("🚀 Загружаем auth.js");
 
@@ -27,9 +27,10 @@ console.log(`✅ Конфигурация: BOT_USERNAME=${BOT_USERNAME}, BASE_UR
 
 const auth = betterAuth({
     secret: BETTER_AUTH_SECRET,
-    database: memoryAdapter(), // <-- вызываем функцию адаптера
+    database: memoryAdapter(),
     plugins: [
         telegram({
+            provider: "telegram",           // 👈 Явно указываем провайдера
             botToken: BOT_TOKEN,
             botUsername: BOT_USERNAME,
             redirectUri: `${BASE_URL}/api/auth/callback/telegram`,
@@ -43,5 +44,7 @@ const auth = betterAuth({
 });
 
 console.log("✅ Better Auth успешно инициализирован (memory)");
+console.log("🔌 Загруженные плагины:", auth.options.plugins?.map(p => p.name || p.provider) || []);
+console.log("🛣️ Доступные эндпоинты:", Object.keys(auth.handler?.routes || {}));
 
 module.exports = { auth };
