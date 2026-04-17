@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Molotov VPN landing",
   "main": "app.js",
-  "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon app.js",
-    "build": "ncc build app.js -o dist && copyfiles -u 1 public/**/* views/**/* dist/"
-  },
+ "scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+},
   "dependencies": {
     "axios": "^1.15.0",
     "dotenv": "^17.4.2",
