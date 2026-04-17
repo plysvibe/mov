@@ -1,6 +1,8 @@
 // auth.js
-require('dotenv').config(); // <-- добавляем, чтобы переменные из .env загрузились сразу
+require('dotenv').config();
 
+const fs = require('fs');
+const path = require('path');
 const { betterAuth } = require("better-auth");
 const { telegram } = require("better-auth-telegram");
 
@@ -10,7 +12,6 @@ console.log("🚀 Загружаем auth.js");
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const BOT_USERNAME = process.env.BOT_USERNAME;
 const BASE_URL = process.env.BASE_URL;
-// Better Auth требует секрет длиной минимум 32 символа
 const BETTER_AUTH_SECRET = process.env.BETTER_AUTH_SECRET || process.env.SESSION_SECRET;
 
 // ========== Проверки ==========
@@ -33,12 +34,25 @@ if (!BETTER_AUTH_SECRET || BETTER_AUTH_SECRET.length < 32) {
 
 console.log(`✅ Конфигурация: BOT_USERNAME=${BOT_USERNAME}, BASE_URL=${BASE_URL}`);
 
+// ========== Подготавливаем путь к базе данных ==========
+// Используем путь из переменной окружения или /app/data/auth.db
+const dbPath = process.env.DATABASE_URL || "/app/data/auth.db";
+const dbDir = path.dirname(dbPath);
+
+// Создаём папку, если её нет
+if (!fs.existsSync(dbDir)) {
+    console.log(`📁 Создаём директорию для базы данных: ${dbDir}`);
+    fs.mkdirSync(dbDir, { recursive: true });
+}
+
+console.log(`🗄️  База данных будет находиться в: ${dbPath}`);
+
 // ========== Инициализация Better Auth с SQLite ==========
 const auth = betterAuth({
     secret: BETTER_AUTH_SECRET,
     database: {
         provider: "sqlite",
-        url: "/app/data/auth.db",               // файл базы данных будет создан в корне проекта
+        url: dbPath,
     },
     plugins: [
         telegram({
