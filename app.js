@@ -13,7 +13,14 @@ const PORT = process.env.PORT || 8080;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
 // ---------- Инициализация бота ----------
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+const ENABLE_BOT = process.env.ENABLE_BOT === 'true';
+let bot = null;
+if (ENABLE_BOT) {
+    bot = new TelegramBot(BOT_TOKEN, { polling: true });
+    console.log('🤖 Бот запущен в режиме polling');
+} else {
+    console.log('⏸️ Бот отключен (ENABLE_BOT !== true)');
+}
 
 const app = express();
 
@@ -87,37 +94,37 @@ function verifyWebAppInitData(initData, botToken) {
     return calculatedHash === hash;
 }
 
-// ========== Обработчик команд бота ==========
-bot.onText(/\/start(?: (.+))?/, async (msg, match) => {
-    const chatId = msg.chat.id;
-    const startParam = match[1] || '';
+// // ========== Обработчик команд бота ==========
+// // // bot.onText(/\/start(?: (.+))?/, async (msg, match) => {
+// //     const chatId = msg.chat.id;
+// //     const startParam = match[1] || '';
 
-    if (startParam === 'register') {
-        // Генерируем одноразовый токен
-        const token = crypto.randomBytes(16).toString('hex');
-        saveAuthToken(chatId, token);
+//     if (startParam === 'register') {
+//         // Генерируем одноразовый токен
+//         const token = crypto.randomBytes(16).toString('hex');
+//         saveAuthToken(chatId, token);
 
-        // URL, который откроется внутри WebApp
-        const authUrl = `${BASE_URL}/auth/telegram/token?token=${token}`;
+//         // URL, который откроется внутри WebApp
+//         const authUrl = `${BASE_URL}/auth/telegram/token?token=${token}`;
 
-        await bot.sendMessage(chatId, 
-            '🔐 Нажмите кнопку ниже, чтобы войти в личный кабинет Molotov VPN', 
-            {
-                reply_markup: {
-                    inline_keyboard: [[{
-                        text: '🚀 Войти на сайт',
-                        web_app: { url: authUrl }
-                    }]]
-                }
-            }
-        );
-    } else {
-        await bot.sendMessage(chatId, 
-            `👋 Добро пожаловать в Molotov VPN!\n\n` +
-            `Используйте команду /register для регистрации и входа на сайт.`
-        );
-    }
-});
+//         await bot.sendMessage(chatId, 
+//             '🔐 Нажмите кнопку ниже, чтобы войти в личный кабинет Molotov VPN', 
+//             {
+//                 reply_markup: {
+//                     inline_keyboard: [[{
+//                         text: '🚀 Войти на сайт',
+//                         web_app: { url: authUrl }
+//                     }]]
+//                 }
+//             }
+//         );
+//     } else {
+//         await bot.sendMessage(chatId, 
+//             `👋 Добро пожаловать в Molotov VPN!\n\n` +
+//             `Используйте команду /register для регистрации и входа на сайт.`
+//         );
+//     }
+// });
 
 // ========== Маршруты ==========
 
@@ -204,6 +211,11 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+
+app.get('/health', (req, res) => res.send('OK'));
+app.get('/test', (req, res) => res.send('Test route works'));
+console.log('Views directory:', path.join(__dirname, 'views'));
+console.log('Public directory:', path.join(__dirname, 'public'));
 
 // ========== Запуск сервера ==========
 app.listen(PORT, '0.0.0.0', () => {
