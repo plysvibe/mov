@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const { auth } = require('./auth');
 const { toNodeHandler } = require('better-auth/node');
 const crypto = require('crypto');
 
